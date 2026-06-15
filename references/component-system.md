@@ -69,6 +69,9 @@ unrelated side effects.
 
 ## Styling Rules
 
+- Build product-facing component dimensions from the 750-wide design baseline
+  and use `rpx` by default. Keep device/system measurements and safe-area or
+  viewport-relative values in their correct native/relative units.
 - Use semantic tokens and existing UnoCSS shortcuts.
 - Keep dynamic class choices in static maps so UnoCSS can extract them.
 - Make root layout behavior explicit; custom components can introduce wrapper

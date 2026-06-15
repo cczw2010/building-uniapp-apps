@@ -70,8 +70,34 @@ guide at <https://unibest.tech/>.
 
 ## Styling
 
-- Use `rpx` for design-scale dimensions where appropriate; use platform-aware
-  handling for viewport, keyboard, and safe-area behavior.
+### Design Baseline
+
+- Follow the WeChat mini-program visual model by default. Create and interpret
+  design drafts at `750px` width; design `1px` maps directly to code `1rpx`.
+- Treat `750rpx` as the page-width baseline. Use `rpx` as the default unit for
+  product layout widths/heights, spacing, padding, margins, radius, icons, and
+  design-scale typography.
+- When a supplied design draft is not 750px wide, convert with:
+  `750 * design value / design draft width`, then use the result in `rpx`.
+- Keep shared spacing, radius, typography, and component-size tokens expressed
+  in `rpx` when they represent product visual scale.
+
+### Required Unit Exceptions
+
+- Keep platform and system measurements in the unit returned by the API,
+  commonly `px`: status bar, capsule/menu button, window metrics, keyboard,
+  and other device measurements. Do not relabel a measured `px` value as
+  `rpx`; convert only when a component contract explicitly requires it.
+- Use `env(safe-area-inset-*)`, percentages, `vh`/`vw`, and `calc()` when the
+  behavior is genuinely relative to safe area, parent size, or viewport.
+- Use `px` for intentional fixed physical-pixel behavior such as a hairline or
+  a platform-defined fixed dimension. Document non-obvious exceptions.
+- Preserve an existing project's explicit design-unit convention unless the
+  user requests migration. Do not mix `px` and `rpx` arbitrarily within the
+  same visual system.
+
+### Cross-Target Styling
+
 - Use semantic theme variables for colors and spacing.
 - Do not assume every browser CSS feature or selector works in mini programs.
 - Test long text, localization, dark mode, keyboard resize, and bottom safe area.

@@ -49,6 +49,7 @@ and locked UniApp dependency family.
 | New general project | Prefer current `create-unibest`; inspect its generated choices before customizing |
 | Existing Unibest project | Preserve file routing, layouts, auto-imports, and generated-file boundaries |
 | UI work | For new projects use Wot UI v2 (`@wot-ui/ui@^2`); preserve existing Wot Design Uni v1 unless migration is explicitly requested |
+| Visual/layout work | Default to the WeChat mini-program 750-wide design baseline and use `rpx` for product visual dimensions |
 | Page-only UI section | Keep it beside the owning page as a private component; promote only after stable reuse appears |
 | Tabbar/navbar work | Preserve the selected native/custom strategy and verify safe-area plus route synchronization |
 | Platform/provider capability | Use a narrow adapter by default when implementations or results differ; do not wrap already-portable APIs without a boundary need |
@@ -121,6 +122,13 @@ and locked UniApp dependency family.
   with Vue component lifecycle hooks.
 - Use stable, static class names for UnoCSS. Safelist intentionally generated
   classes; do not construct arbitrary class names at runtime.
+- Default frontend visual work to a 750px-wide design draft where design
+  `1px` maps to code `1rpx`. Use `rpx` for product layout, spacing, component
+  size, radius, icons, and design-scale typography unless the existing project
+  has an explicit different standard.
+- Do not mechanically replace platform/system measurements, safe-area values,
+  viewport-relative layout, percentages, or intentional physical-pixel hairlines
+  with `rpx`. Keep each exception explicit and local.
 - Do not create a generic component merely because markup repeats once. Extract
   stable behavior, policy, or visual semantics with a clear owner and contract.
 - Page-private components may be extracted for readability and kept beside

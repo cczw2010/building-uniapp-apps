@@ -26,6 +26,8 @@ snapshot in the skill.
 - UniApp docs: <https://uniapp.dcloud.net.cn/>
 - UniApp platform conditionals:
   <https://uniapp.dcloud.net.cn/tutorial/platform.html>
+- UniApp page styling, 750-wide baseline, and `rpx`:
+  <https://uniapp.dcloud.net.cn/tutorial/syntax-css.html>
 - UniApp GitHub: <https://github.com/dcloudio/uni-app>
 - Unibest docs: <https://unibest.tech/>
 - Unibest tabbar guide: <https://unibest.tech/base/2-tabbar>

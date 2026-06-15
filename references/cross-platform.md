@@ -5,6 +5,10 @@
 Implement the common path with Vue and `uni.*` APIs. Introduce divergence only
 when platform capability or UX genuinely differs.
 
+Use the WeChat mini-program 750-wide visual baseline and `rpx` for shared
+product design dimensions. Keep system-measured `px`, safe-area expressions,
+percentages, and viewport units as explicit cross-platform exceptions.
+
 ## Where To Put Divergence
 
 Prefer, in order:
@@ -58,4 +62,3 @@ each supported target.
 - Keyboard, scroll, popup, safe area, and tab bar
 - Long lists, package size, startup performance
 - Dark mode, font/icon assets, and dynamic classes
-

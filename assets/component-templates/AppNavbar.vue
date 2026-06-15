@@ -3,15 +3,15 @@ import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{
   title?: string
-  height?: number
-  statusBarHeight?: number
+  heightPx?: number
+  statusBarHeightPx?: number
   fixed?: boolean
   placeholder?: boolean
   showBack?: boolean
 }>(), {
   title: '',
-  height: 44,
-  statusBarHeight: 0,
+  heightPx: 44,
+  statusBarHeightPx: 0,
   fixed: true,
   placeholder: true,
   showBack: true,
@@ -21,7 +21,8 @@ const emit = defineEmits<{
   back: []
 }>()
 
-const totalHeight = computed(() => props.height + props.statusBarHeight)
+// Navbar and status-bar values come from platform measurements and stay in px.
+const totalHeightPx = computed(() => props.heightPx + props.statusBarHeightPx)
 
 function handleBack() {
   emit('back')
@@ -32,14 +33,14 @@ function handleBack() {
   <view
     v-if="fixed && placeholder"
     aria-hidden="true"
-    :style="{ height: `${totalHeight}px` }"
+    :style="{ height: `${totalHeightPx}px` }"
   />
   <view
     class="app-navbar"
     :class="{ 'app-navbar--fixed': fixed }"
     :style="{
-      height: `${height}px`,
-      paddingTop: `${statusBarHeight}px`,
+      height: `${heightPx}px`,
+      paddingTop: `${statusBarHeightPx}px`,
     }"
   >
     <view class="app-navbar__left">
