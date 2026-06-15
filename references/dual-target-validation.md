@@ -29,8 +29,11 @@ Treat reported direct capability calls as architecture review prompts. A direct
 call may be valid inside a target adapter, but it should not remain scattered
 through pages, components, stores, or business services.
 
-Run repository scripts for lint, typecheck, tests, H5 build, and
-`mp-weixin` build. Use exact project script names.
+During feature work, run focused checks and only the affected target/flow.
+Run repository-wide lint, typecheck, tests, H5 build, and `mp-weixin` build for
+release, new-project baseline, explicit full review, or a high-impact shared
+change. Use exact project script names and the bounded execution rules in
+[validation.md](validation.md).
 
 ## Capability Test Cases
 

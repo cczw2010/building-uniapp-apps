@@ -78,7 +78,9 @@ Use several signals:
    registration.
 2. Check `pages.config.*`, `pages.json`, manifest, easycom/resolvers, UnoCSS
    safelist, and conditional compilation.
-3. Run lint/typecheck/tests and both target builds.
+3. During small cleanup groups, run focused checks and affected builds. Run
+   lint/typecheck/tests and both target builds for the final project-level
+   cleanup or release gate.
 4. Verify the related runtime flow.
 5. Delete in small groups and re-verify.
 
@@ -103,8 +105,10 @@ be treated as proof that code is unused.
 2. Remove their pages/components/adapters/mocks/assets.
 3. Remove now-unused exports, constants, styles, and dependencies.
 4. Remove stale compatibility code and comments.
-5. Run format/lint/typecheck/tests/builds.
-6. Manually verify affected startup, auth, navigation, H5, and WeChat flows.
+5. Run focused checks after each coherent group; run the full relevant suite
+   once at the final cleanup/release gate.
+6. Manually verify affected startup, auth, navigation, H5, and WeChat flows
+   with bounded waits and controlled server/browser sessions.
 
 ## Stop Conditions
 

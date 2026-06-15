@@ -31,10 +31,16 @@ and locked UniApp dependency family.
    Synchronize every affected caller, contract, config, test, Mock, comment, and
    explanation in the same change.
 5. Validate proportionally:
-   - Local target-specific change: focused checks and the affected target.
-   - Shared/platform/startup/navigation change: H5 and target mini program.
-   - New project/release: full lint/type/tests/build/runtime/release checks.
-   Report what was actually verified and remaining risk.
+   - During implementation, run only focused checks for the changed behavior,
+     its callers/contracts, and affected target. Batch coherent edits before
+     validation; do not run the full suite after every modification.
+   - Shared/platform/startup/navigation change: focused checks plus affected H5
+     and mini-program flows.
+   - New-project baseline, release, explicit full review, or high-impact shared
+     change: full lint/type/tests/build/runtime/release checks.
+   Bound every potentially long-running command, server wait, and browser action
+   with a timeout and stop condition. Report what was actually verified,
+   timed out, skipped, and remaining risk.
 
 ## Choose The Path
 
@@ -50,7 +56,7 @@ and locked UniApp dependency family.
 | Public shared configuration | Automatically extract environment-dependent public values behind one validated config module; keep stable constants and secrets elsewhere |
 | API/mock work | Keep domain API modules simple; inject deterministic development mocks only through the shared request layer |
 | Replacement/refactor | Replace the old internal approach directly; retain compatibility code only when explicitly required or externally consumed |
-| Review/release | Run structural and cleanup audits, both target builds, relevant real-device flows, and release checks |
+| Review/release | Follow the requested review scope; run structural/cleanup audits, all target builds, selected real-device flows, and release checks only for release or explicit full review |
 
 ## Non-Negotiable Rules
 
@@ -101,6 +107,16 @@ and locked UniApp dependency family.
   read `import.meta.env` directly.
 - Do not assume H5 success proves mini-program success. Validate every affected
   or promised target according to the scope gate.
+- Never wait indefinitely for validation, a dev server, vendor tool, browser
+  action, or watcher. Use an explicit bounded wait, capture useful output, stop
+  the process/session when finished or stalled, and report a timeout as
+  unverified rather than blocking the task.
+- Do not rerun the same stalled command or browser step without a diagnosis or
+  concrete change. Retry at most once with an explicit reason; otherwise use a
+  narrower check or report the limitation.
+- Do not open or compare unrelated projects, pages, or browser states during
+  routine feature work. Runtime and visual checks must target the changed flow
+  and directly affected states.
 - Preserve lifecycle semantics: page lifecycle hooks are not interchangeable
   with Vue component lifecycle hooks.
 - Use stable, static class names for UnoCSS. Safelist intentionally generated

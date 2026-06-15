@@ -84,8 +84,10 @@ unrelated side effects.
 2. Define typed props, emits, slots, and state ownership.
 3. Reuse Wot UI v2 primitives where appropriate.
 4. Add focused tests for behavior-heavy components.
-5. Build H5 and the target mini program.
-6. Manually verify visual states and parent-child event behavior.
+5. Build only affected targets during implementation; build H5 and the target
+   mini program when the component is shared across both or at release.
+6. Manually verify only affected visual states and parent-child event behavior
+   using bounded runtime/browser checks.
 
 ## Common Mistakes
 

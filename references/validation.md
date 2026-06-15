@@ -1,18 +1,74 @@
 # Debugging And Validation
 
-## Verification Ladder
+## Validation Scope Gate
 
-Run the repository's actual scripts. Do not invent commands when scripts differ.
+Run the repository's actual scripts. Do not invent commands when scripts differ,
+and do not run every available command by default.
 
-1. Install with the lockfile and pinned package manager.
+| Scope | Required validation |
+|---|---|
+| Local page/component/style change | Changed-file lint/format if supported, focused tests, and affected page/state on the affected target |
+| API/store/composable/adapter change | Focused owner/consumer tests plus affected workflow; add the second target only when shared behavior can differ |
+| Shared startup/auth/navigation/config/platform change | Focused tests and the affected flow on H5 plus target mini program |
+| New-project baseline, release, explicit full review, or high-impact shared change | Full relevant lint/type/tests/builds plus selected runtime/release flows |
+
+Batch a coherent implementation before validating it. Do not run a full
+lint/type/test/build/browser matrix after each file edit.
+
+## Bounded Execution
+
+Every command or tool call that may wait must have an explicit timeout or
+bounded polling plan. Use repository history and known baseline durations when
+available; otherwise start with these defaults:
+
+| Operation | Initial bound |
+|---|---|
+| Focused lint/test/script | 2 minutes |
+| Typecheck or target build | 5 minutes |
+| Dev-server readiness | 90 seconds |
+| One browser navigation/action/assertion | 30 seconds |
+
+- A timeout means **unverified**, not passed and not automatically failed.
+  Capture the last useful logs and identify whether the cause is startup,
+  dependency installation, build, browser automation, or application behavior.
+- Retry a stalled operation at most once and only after a diagnosis, narrower
+  scope, configuration change, or increased bound justified by a known normal
+  duration. Never repeat an identical hung command.
+- Prefer a focused test file, changed package, or affected target over a whole
+  repository command during implementation.
+- Do not start a watcher for checks that have a one-shot command.
+
+## Runtime And Browser Checks
+
+- Run runtime/browser checks only when visual behavior, interaction, routing,
+  lifecycle, or runtime integration is affected.
+- Reuse a healthy existing server when its ownership is clear. Otherwise start
+  the dev server in a controllable background/PTTY session, wait for one
+  explicit readiness signal, inspect the changed route and states, then stop
+  the session.
+- Never run `dev:*` or another watcher as a blocking foreground validation
+  command. Do not leave servers, browser sessions, or polling loops running
+  after verification.
+- Inspect only the affected page, workflow, viewport, and states. Compare
+  another project or broad visual baseline only when the request or acceptance
+  criteria require it.
+- If server readiness or browser automation times out, stop it, preserve useful
+  logs/screenshots when available, continue with narrower static/build checks,
+  and report the runtime check as unverified.
+
+## Full Verification Ladder
+
+Use this ladder only for new-project baselines, releases, explicit full reviews,
+or high-impact shared changes:
+
+1. Install with the lockfile and pinned package manager when dependencies need
+   installation.
 2. Run formatting/lint checks.
 3. Run TypeScript/type checks.
-4. Run unit tests for pure utilities, services, stores, and adapters.
-5. Build H5.
-6. Build every promised mini-program target.
-7. Open H5 and the vendor developer tool; verify the changed workflow.
-8. Use a real device for camera, location, Bluetooth, payment, login, share,
-   keyboard, safe area, and performance-sensitive flows.
+4. Run unit tests.
+5. Build H5 and every promised mini-program target.
+6. Open only selected primary workflows in H5 and the vendor developer tool.
+7. Use a real device for affected device/provider capabilities.
 
 Typical Unibest/UniApp script names may resemble:
 
@@ -42,7 +98,8 @@ node scripts/test-audit-project-cleanup.mjs
 3. Compare generated target output and developer-tool console/network panels.
 4. Reduce to the smallest platform boundary.
 5. Fix shared code when the cause is shared; otherwise isolate the target fix.
-6. Re-run the full target matrix.
+6. Re-run the focused reproduction and affected checks. Escalate to the full
+   target matrix only when the change or release scope requires it.
 
 ## Common Failure Patterns
 
@@ -77,8 +134,11 @@ Before publishing H5 or submitting a mini program:
 ## Definition Of Done
 
 - No unexplained warnings or type errors.
-- Builds pass for every claimed target.
-- Primary workflow manually verified on H5 and target mini program.
+- Focused checks and affected target builds pass for the current change.
+- The affected workflow is manually verified only on impacted targets; shared
+  cross-target behavior is checked on H5 plus the target mini program.
+- For release or explicit full review, builds pass for every claimed target and
+  selected primary workflows are manually verified.
 - Loading, empty, error, retry, offline/timeout, and permission-denial states
   handled where relevant.
 - Platform-specific behavior isolated and documented.
