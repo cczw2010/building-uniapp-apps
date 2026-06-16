@@ -76,6 +76,9 @@ unrelated side effects.
 - Keep dynamic class choices in static maps so UnoCSS can extract them.
 - Make root layout behavior explicit; custom components can introduce wrapper
   nodes on mini-program targets.
+- Do not start from a bundled page or navbar component template. Native navbar
+  and page-local layout are the default; build shared shells only from repeated
+  project-specific policy.
 - Use `virtualHost` only for supported targets and only when wrapper removal is
   required. Verify component styling after enabling it.
 - Test long text, missing images, loading, empty, error, disabled, dark mode,

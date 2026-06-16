@@ -24,8 +24,9 @@ type AsyncStatus = 'idle' | 'pending' | 'success' | 'error' | 'cancelled'
 ```
 
 Keep `status`, `data`, and `error` together in the workflow owner. Adapt
-[async-action.ts](../assets/platform-adapter-template/async-action.ts) for local
-login, payment, upload, permission, and submit workflows.
+the existing project pattern when the workflow becomes complex enough to
+justify a helper; otherwise keep the discriminated state in the page or owning
+component.
 
 Do not put generic async action state in a global store. Create an instance per
 workflow.

@@ -73,12 +73,21 @@ guide at <https://unibest.tech/>.
 ### Design Baseline
 
 - Follow the WeChat mini-program visual model by default. Create and interpret
-  design drafts at `750px` width; design `1px` maps directly to code `1rpx`.
-- Treat `750rpx` as the page-width baseline. Use `rpx` as the default unit for
-  product layout widths/heights, spacing, padding, margins, radius, icons, and
-  design-scale typography.
-- When a supplied design draft is not 750px wide, convert with:
-  `750 * design value / design draft width`, then use the result in `rpx`.
+  design measurements on a 750-wide coordinate system; design `1px` on a
+  normalized 750px draft maps directly to code `1rpx`.
+- Page/root containers default to `width: 100%`. Do not set page width to the
+  design image's raw width, and do not use the design image width as a runtime
+  layout constraint.
+- Treat `750rpx` as the calculation baseline for internal product dimensions.
+  Use `rpx` as the default unit for product widths/heights, spacing, padding,
+  margins, radius, icons, and design-scale typography.
+- When a supplied design draft is not 750px wide, normalize every measured value
+  with `750 * design value / design draft width`, then use the result in `rpx`.
+  A 390px-wide screenshot is not a 390px or 390rpx page; it is scaled to the
+  750rpx coordinate system before implementation.
+- Use `width: 100%`, flex, grid, or percentage layout for full-width containers.
+  Use a fixed `rpx` width only for an intentional internal element size from the
+  normalized design system.
 - Keep shared spacing, radius, typography, and component-size tokens expressed
   in `rpx` when they represent product visual scale.
 

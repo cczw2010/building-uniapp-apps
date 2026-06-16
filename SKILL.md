@@ -49,7 +49,7 @@ and locked UniApp dependency family.
 | New general project | Prefer current `create-unibest`; inspect its generated choices before customizing |
 | Existing Unibest project | Preserve file routing, layouts, auto-imports, and generated-file boundaries |
 | UI work | For new projects use Wot UI v2 (`@wot-ui/ui@^2`); preserve existing Wot Design Uni v1 unless migration is explicitly requested |
-| Visual/layout work | Default to the WeChat mini-program 750-wide design baseline and use `rpx` for product visual dimensions |
+| Visual/layout work | Keep page/root width at `100%`; normalize design art to a 750rpx coordinate system and use `rpx` for product dimensions |
 | Page-only UI section | Keep it beside the owning page as a private component; promote only after stable reuse appears |
 | Tabbar/navbar work | Preserve the selected native/custom strategy and verify safe-area plus route synchronization |
 | Platform/provider capability | Use a narrow adapter by default when implementations or results differ; do not wrap already-portable APIs without a boundary need |
@@ -122,10 +122,13 @@ and locked UniApp dependency family.
   with Vue component lifecycle hooks.
 - Use stable, static class names for UnoCSS. Safelist intentionally generated
   classes; do not construct arbitrary class names at runtime.
-- Default frontend visual work to a 750px-wide design draft where design
-  `1px` maps to code `1rpx`. Use `rpx` for product layout, spacing, component
-  size, radius, icons, and design-scale typography unless the existing project
-  has an explicit different standard.
+- Default frontend visual work to a 750rpx coordinate system, but keep page and
+  root containers at `width: 100%`. Never set page width from the design image's
+  raw pixel width.
+- If a design image is not 750px wide, first scale its measurements to a 750
+  baseline, then write product layout, spacing, component size, radius, icons,
+  and design-scale typography in `rpx`. Do not copy screenshot `px` values into
+  code.
 - Do not mechanically replace platform/system measurements, safe-area values,
   viewport-relative layout, percentages, or intentional physical-pixel hairlines
   with `rpx`. Keep each exception explicit and local.
@@ -136,6 +139,9 @@ and locked UniApp dependency family.
 - Do not replace native navigation or tabbar without a concrete product need.
   Custom navigation inherits safe-area, page-stack, accessibility, and
   cross-platform responsibilities.
+- For Unibest tabbar, preserve the official `NO_TABBAR`/`NATIVE_TABBAR`/
+  `CUSTOM_TABBAR` strategy config. Change only the selected strategy and its
+  matching list; regenerate/restart so `pages.json` reflects the config.
 
 ## Reference Routing
 
@@ -171,12 +177,13 @@ State:
 4. Any target, device API, authorization flow, or package-family risk not
    verified.
 
-## Reusable Templates
+## Reusable Starting Points
 
-Use templates only when their responsibility is required now:
+Use starting points only when their responsibility is required now. Do not copy a
+generic UI shell into a project before the product need and existing project
+pattern are clear.
 
-- `assets/component-templates/`: page/navbar shells.
-- `assets/platform-adapter-template/`: capability ports, system UI, async state.
+- `assets/platform-adapter-template/`: capability ports and system UI metrics.
 - `assets/global-business-template/`: bootstrap and minimal session store.
 - `assets/api-mock-template/`: lightweight request/API/automatic Mock shape.
 - `assets/environment-config-template/`: public environment boundary.

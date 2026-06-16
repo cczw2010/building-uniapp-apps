@@ -77,7 +77,7 @@ Use one system-UI adapter for custom navbar metrics. On WeChat mini program:
   tools.
 
 On H5, return an explicit fallback with no capsule. Do not fabricate a WeChat
-capsule or scatter platform checks inside `AppNavbar`.
+capsule or scatter platform checks inside the presentation navbar component.
 
 Adapt
 [system-ui-adapter.ts](../assets/platform-adapter-template/system-ui-adapter.ts).

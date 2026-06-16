@@ -9,30 +9,59 @@
 | Custom tabbar | Runtime role filtering, badges, custom icons, center action, product-specific behavior | Native behavior already satisfies requirements |
 
 For current Unibest projects, preserve its built-in strategy constants and
-configuration instead of creating a second tabbar system. The current base
-template supports no tabbar, native tabbar, and custom tabbar strategies.
+configuration instead of creating a second tabbar system. The current `base`
+template supports the old tabbar/spa use cases through three strategies:
+
+| Value | Strategy | Effective config |
+|---|---|---|
+| `0` | `NO_TABBAR` | Neither `nativeTabbarList` nor `customTabbarList` should take effect |
+| `1` | `NATIVE_TABBAR` | Only `nativeTabbarList` should drive `tabBar.list` |
+| `2` | `CUSTOM_TABBAR` | Only `customTabbarList` should drive the custom UI; a simplified tabbar list still feeds page config |
+
+Change `selectedTabbarStrategy` instead of forking route, tabbar, or store
+logic. After changing strategy or tabbar lists, rerun the project command that
+regenerates config/restarts the app; generated `pages.json` will not update
+from an edited config file until the project is rerun.
+
+Use Unibest's derived flags as the source of behavior:
+
+- `tabbarCacheEnable`: true for native and custom strategies.
+- `customTabbarEnable`: true only for custom strategy.
+- `needHideNativeTabbar`: true only for custom strategy.
+- `tabbarList`: full active list for UI/store usage.
 
 ## Custom Tabbar Invariants
 
 - Keep tab pages in route/pages configuration even when rendering a custom
   visual tabbar.
-- Use `uni.switchTab` for cached tab pages. Do not only update the selected
-  index.
+- Use `uni.switchTab` for cached tab pages in both native and custom strategies.
+  Do not only update the selected index or navigate with normal page APIs.
+- Let the selected strategy decide the active list: never merge
+  `nativeTabbarList` and `customTabbarList`, and do not keep a second page-local
+  tabbar config.
 - Derive or resynchronize selection from the current page stack after app
   restore, H5 visibility restore, share/deep-link entry, auth interception, and
   completed navigation.
 - Restore the previous selected item when navigation fails.
-- Hide the native tabbar only where required by the selected target; platform
-  timing differs.
+- Hide the native tabbar only when `needHideNativeTabbar` is true. The custom
+  strategy hides native chrome and renders its own UI; it is not a separate
+  route system.
 - Reserve bottom safe-area space and prevent page content from being covered.
-- Safelist configured UnoCSS icon classes because runtime configuration strings
-  may not be extracted.
+- Safelist configured UnoCSS icon classes, or keep a static commented reference
+  in the tabbar component, because runtime configuration strings may not be
+  extracted.
+- For custom `image` icons, configure both `icon` and `iconActive`. For
+  `iconfont`, include the required `iconfont` class prefix. For UI-library
+  icons, keep the component mapping in the global custom tabbar boundary.
+- Configure center bulge or special action behavior in the tabbar store and
+  global tabbar component, not inside individual pages.
 - Test role changes, badge changes, repeated current-tab clicks, back navigation,
   login redirects, and first-load flicker.
 
-Unibest's current documentation notes that custom tabbar first-click flicker can
-occur and that `custom: true` in pages configuration only applies to WeChat mini
-program; H5 and App need their own rendered behavior.
+Unibest's current documentation notes that custom tabbar first-click flicker is
+a known limitation. Do not promise to eliminate it with extra state layers.
+`tabBar.custom` in pages configuration only applies to WeChat mini program; H5
+and App need their rendered behavior from the custom tabbar component.
 
 ## Native Tabbar Rules
 
@@ -40,6 +69,8 @@ program; H5 and App need their own rendered behavior.
 - Do not promise runtime role-based tab removal; choose custom tabbar when menu
   items must change dynamically.
 - Keep tabbar pages at top-level routes where required by the target.
+- Use selected/unselected icon assets or an iconfont approach accepted by the
+  target; native tabbar cannot freely render arbitrary custom UI.
 - Verify target limits for item count, icon formats, dimensions, and package
   paths.
 
@@ -60,7 +91,9 @@ hard-code total height. Read measurements through one system-info adapter.
 
 ## Navbar Contract
 
-Prefer a controlled component:
+When a custom navbar is justified, implement it from the project's current
+design system instead of copying a generic bundled template. Prefer a controlled
+component:
 
 - Props: `title`, `fixed`, `placeholder`, `transparent`, `showBack`,
   `showHome`, and measured dimensions when needed.
@@ -70,18 +103,19 @@ Prefer a controlled component:
   otherwise route to the configured home page. Keep this policy outside the
   presentation component.
 
-Keep platform measurement code outside the presentation component. Adapt
-[AppNavbar.vue](../assets/component-templates/AppNavbar.vue) to the repository's
-system-info helper and routing policy.
+Keep platform measurement code outside the presentation component. Use the
+system-UI adapter pattern in
+[system-ui-adapter.ts](../assets/platform-adapter-template/system-ui-adapter.ts)
+only when the project does not already have an equivalent metrics boundary.
 
 ## Page Shell And Safe Areas
 
-Use one page shell for repeated page-level policy: background, min height,
-loading/empty/error state placement, top/bottom safe areas, and custom navbar
-placeholder. Do not make it own business fetching.
-
-Adapt [AppPage.vue](../assets/component-templates/AppPage.vue) instead of
-duplicating page-state branching on every route.
+Do not create a global page shell by default. Keep simple page layout in the
+page. Create a page shell only when repeated page-level policy is already clear:
+background, full-width root, loading/empty/error state placement, top/bottom
+safe areas, or custom-navbar placeholder. Do not make it own business fetching.
+Build that shell in the project style, with root width `100%` and product
+dimensions in `rpx`.
 
 ## Verification Matrix
 

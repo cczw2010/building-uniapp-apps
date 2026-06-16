@@ -7,7 +7,7 @@ Skill 名称：`building-uniapp-apps`
 ## 设计原则
 
 - 优先完成最小业务闭环，避免提前建设大量公共层。
-- 前端设计默认遵循微信小程序 750 宽规范，产品视觉尺寸优先使用 `rpx`。
+- 页面/root 宽度默认 `100%`；设计图先归一到 750rpx 坐标系，内部产品尺寸用 `rpx`。
 - 页面保留简单状态与事件；Composable 仅用于复杂或真实复用的响应式流程。
 - Adapter 隔离真实的平台、供应商和设备能力差异。
 - Store 只保存必要的跨页面持久状态。
@@ -35,7 +35,7 @@ Skill 名称：`building-uniapp-apps`
 building-uniapp-apps/
 ├── SKILL.md       # Agent 触发后加载的核心规则
 ├── references/    # 根据任务按需加载的详细规范
-├── assets/        # 可按需采用的模板
+├── assets/        # 可按需采用的边界模板，不包含通用 UI 壳
 ├── scripts/       # 项目结构与清理审计
 └── agents/        # Codex 展示元数据
 ```

@@ -24,8 +24,8 @@ prop, event, slot, or platform capability.
 
 | Component | Build when | Must not own |
 |---|---|---|
-| `AppPage` | Pages share safe areas, background, and state slots | API fetching or business store |
-| `AppNavbar` | Multiple custom-navbar pages share behavior | Platform measurements hidden inside ad hoc view code |
+| `AppPage` | Several pages already share concrete safe-area/background/state-slot policy | API fetching, business store, or one-off page layout |
+| `AppNavbar` | Native navbar is insufficient and multiple custom-navbar pages share project-specific behavior | Platform measurements hidden inside ad hoc view code |
 | `AppIcon` | Product uses multiple icon sources with one semantic API | Unbounded arbitrary runtime class construction |
 | `SafeAreaBottom` | Bottom-safe padding repeats outside page shell | Device/business logic |
 | `SectionHeader` | Product section hierarchy repeats | Page-specific actions |
@@ -64,8 +64,9 @@ implementations can differ without leaking conditionals into forms.
 | `PermissionLink` | Hide/disable/redirect based on explicit policy |
 | `BackHomeAction` | Resolve no-history back behavior consistently |
 
-Use Unibest's built-in tabbar implementation when present. Extend its config and
-store instead of adding another `CustomTabbar`.
+Use Unibest's built-in tabbar implementation when present. Extend the selected
+strategy config, active list, store, and global tabbar component instead of
+adding another `CustomTabbar` or duplicating tabbar markup in pages.
 
 ## Business Components
 
