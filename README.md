@@ -42,6 +42,13 @@ building-uniapp-apps/
 
 `README.md` 面向使用者，不参与 Skill 的引用路由，正常开发任务不会自动加载它。
 
+## Token 使用建议
+
+- 正常使用时只提 Skill 名称和具体任务，不要把 `SKILL.md`、`README.md` 或 `references/` 全文粘贴进提示。
+- 日常页面或组件修改应只让 Agent 读取当前文件、调用方和相关配置；只有碰到平台、路由、API、Store、Mock、环境配置等边界问题时才打开对应 reference。
+- 创建项目、发布前审查、全量架构审查才需要读取多个 reference 并运行审计脚本。
+- 打包给不支持按需读取的工具时，排除 `.git/`、`.DS_Store`、运行产物和嵌套 Skill 目录，避免被整包索引。
+
 ## 安装
 
 将完整的 `building-uniapp-apps` 文件夹安装到工具支持的 Skills 目录。不要只复制 `SKILL.md`，否则模板、引用资料和审计脚本不可用。
