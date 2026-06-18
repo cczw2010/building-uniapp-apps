@@ -7,7 +7,7 @@ When the user does not specify a language:
 1. Preserve the existing repository and local-folder language.
 2. For a new mixed-language project, prefer JavaScript for page SFC
    orchestration and simple presentation components.
-3. Use TypeScript for shared contracts, API DTOs, capability ports/adapters,
+3. Use TypeScript for shared contracts, API DTOs, real cross-platform adapters,
    stores, reusable libraries, and behavior whose input/output ambiguity creates
    real risk.
 4. Do not mix `.js` and `.ts` versions of the same responsibility.

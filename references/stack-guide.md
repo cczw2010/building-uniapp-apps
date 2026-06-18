@@ -57,7 +57,7 @@ guide at <https://unibest.tech/>.
   `<script setup>` JavaScript for page SFC orchestration. Keep page code short
   and readable.
 - Use TypeScript where a shared contract prevents real ambiguity: API DTOs,
-  capability ports, adapters, stores, reusable component contracts, complex
+  real cross-platform adapters, stores, reusable component contracts, complex
   utilities, and library modules.
 - Simple constants and utilities may use either language consistently with their
   surrounding module.

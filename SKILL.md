@@ -99,7 +99,7 @@ Open a reference only when the task hits its trigger:
 | Store, page state, composable, or event boundary | [state-and-event-boundaries.md](references/state-and-event-boundaries.md) |
 | Language, naming, or comment convention | [coding-conventions.md](references/coding-conventions.md) |
 | Stack-specific UI units, Wot UI, UnoCSS, 750rpx | [stack-guide.md](references/stack-guide.md) |
-| Component extraction or common component inventory | [component-system.md](references/component-system.md), then [component-catalog.md](references/component-catalog.md) only if needed |
+| Component extraction or shared component boundary | [component-system.md](references/component-system.md) |
 | Tabbar, navbar, safe area, route sync | [navigation-and-tabbar.md](references/navigation-and-tabbar.md) |
 | Mini-program lifecycle or authorization basics | [mini-program-basics.md](references/mini-program-basics.md) |
 | Platform/provider capability difference | [platform-adapters.md](references/platform-adapters.md), then [cross-platform.md](references/cross-platform.md) only if needed |
@@ -123,7 +123,6 @@ Use starting points only when their responsibility is required now. Do not copy 
 generic UI shell into a project before the product need and existing project
 pattern are clear.
 
-- `assets/platform-adapter-template/`: capability ports and system UI metrics.
-- `assets/global-business-template/`: bootstrap and minimal session store.
-- `assets/api-mock-template/`: lightweight request/API/automatic Mock shape.
+- `assets/platform-adapter-template/`: custom-navbar system UI metrics only.
+- `assets/api-mock-template/`: lightweight request and automatic Mock entry.
 - `assets/environment-config-template/`: public environment boundary.

@@ -2,27 +2,17 @@
 
 ## Recommended Boundaries
 
-```text
-src/
-  api/              # Domain request functions plus one shared request client
-  adapters/         # Capability ports/contracts; no target-specific globals
-  components/       # Reusable presentation components
-  composables/      # Optional complex/reused reactive workflows
-  config/           # Validated public environment and feature configuration
-  constants/        # Stable constants and enums
-  layouts/          # Shared page shells when supported
-  pages/            # Route entry points; orchestration, not deep business logic
-  platform/         # Narrow target-specific implementations
-  services/         # Optional: reused multi-API business workflows only
-  static/           # Truly static assets
-  stores/           # Cross-page state; persist only what must survive
-  styles/           # Theme tokens and global styles
-  types/            # Shared domain and infrastructure types
-  utils/            # Pure, platform-neutral helpers
-```
+Keep the generated project layout. Add a directory only with its first real
+owner:
 
-Prefer feature folders for large products, but keep shared infrastructure
-boundaries visible.
+- `api/`: the first backend endpoint and shared request client.
+- `config/`: the first public environment value needing normalization.
+- `stores/`: the first durable cross-page state, usually session.
+- `utils/`: a pure helper with a current consumer.
+- `components/`, `composables/`, `adapters/`, or `services/`: only after their
+  extraction gates are met.
+
+Do not create empty architecture folders during project setup.
 
 ## Dependency Direction
 
@@ -43,16 +33,15 @@ rather than reading `import.meta.env` directly. Keep stable business constants
 in `constants/`; environment configuration is only for public values that
 actually vary by environment, deployment, or target.
 
-Use this direction for platform capabilities:
+Use this direction only when those optional boundaries exist:
 
 ```text
 page/component -> composable? -> domain API -> request client
-                              -> service? -> domain APIs/capability ports
-platform implementation ------------------------^
+                              -> service? -> domain APIs/adapter?
+target-specific adapter -------------------------^
 ```
 
-The platform implementation satisfies a port; it does not own business state,
-route policy, toasts, or UI events.
+An adapter does not own business state, route policy, toasts, or UI events.
 
 ## Request Layer
 
@@ -78,7 +67,8 @@ directly or branch on Mock configuration.
 - Put only authenticated session facts, minimal current-user summary,
   cross-page permissions/roles, theme, locale, and truly durable app state in
   Pinia.
-- Persist a minimal subset through a storage adapter.
+- Persist a minimal subset with `uni.*` storage; add a helper only when shared
+  migration, expiry, versioning, or serialization policy exists.
 - Clear user-scoped stores and storage on logout/account switch.
 - Keep transient capability state such as upload progress, payment submission,
   permission prompt, and login attempt local to the initiating workflow.

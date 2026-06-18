@@ -22,7 +22,7 @@ Skill 名称：`building-uniapp-apps`
 
 - 新建或接管 UniApp、Unibest 项目
 - H5 与微信小程序兼容开发
-- 自定义 Tabbar、Navbar、安全区与页面壳
+- 自定义 Tabbar、Navbar、安全区与页面布局
 - 登录鉴权、启动流程、权限、支付、上传、分享等平台能力
 - Wot UI v2、UnoCSS 与组件边界规范
 - API、Mock、环境配置和精简 Store 设计

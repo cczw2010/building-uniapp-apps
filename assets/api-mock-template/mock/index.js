@@ -1,8 +1,5 @@
-import userMocks from './user.js'
-
-const handlers = {
-  ...userMocks,
-}
+// ponytail: add only handlers required by the current flow.
+const handlers = {}
 
 function normalizePath(url) {
   const [path] = url.split('?')

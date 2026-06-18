@@ -26,15 +26,15 @@
 
 ## Authorization And Device Capabilities
 
-Create typed adapters for login, profile, phone number, location, camera,
-album/file selection, upload, payment, share, and subscription messages.
+Call portable `uni.*` APIs directly. Add a small adapter only when the H5 and
+WeChat implementation or result actually differs.
 
-For every capability:
+For each capability used by the current feature:
 
 1. Detect availability.
 2. Request permission only at a user-initiated moment.
 3. Handle denial, cancellation, and settings recovery.
-4. Return a typed result to the caller.
+4. Return the smallest stable result the caller needs.
 5. Verify on a real device.
 
 Do not treat authorization success as permanent.
@@ -66,4 +66,3 @@ Do not treat authorization success as permanent.
 - Startup, background/foreground restore, page stack, and account switch
 - Safe areas, capsule/navbar, keyboard, scroll, popup, and tabbar overlays
 - Developer tool build plus real-device verification
-

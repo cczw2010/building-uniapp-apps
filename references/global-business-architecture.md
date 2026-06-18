@@ -17,7 +17,7 @@ device permissions global.
 
 ## Startup Pipeline
 
-Use one idempotent, single-flight bootstrap coordinator:
+Use one idempotent, single-flight bootstrap in the existing app/session owner:
 
 ```text
 app launch
@@ -33,10 +33,9 @@ Pages must not independently restore tokens or fetch the current user during
 startup. Route guards and pages await the same bootstrap promise.
 
 Build-time public environment values are normalized synchronously by the shared
-config module. Load public runtime config in this pipeline only when values must
-change after deployment without rebuilding.
-
-Adapt [app-bootstrap.ts](../assets/global-business-template/app-bootstrap.ts).
+config module. Load runtime config here only when deployment must change it
+without rebuilding. Do not create a generic bootstrap factory or dependency
+interface for one application.
 
 ## Authentication Gate
 
@@ -108,7 +107,8 @@ Derive `isAuthenticated`, role checks, display name, and similar values. Keep
 login form state, bootstrap promise, redirect intent, request errors, and
 feature-specific permissions outside the store.
 
-Adapt [session-store.ts](../assets/global-business-template/session-store.ts).
+Extend the existing session store. Create a new store only when the project has
+no session owner, and add only fields used by current protected flows.
 
 ## Other Global Business Modules
 
